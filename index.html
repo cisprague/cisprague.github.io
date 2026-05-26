@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Personal website of Christopher Iliffe Sprague."
+    >
+    <title>Christopher Iliffe Sprague</title>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <script src="assets/js/site.js?v=2" defer></script>
+  </head>
+  <body>
+    <main class="page" aria-label="Personal site">
+      <section class="root-block" aria-label="Main content block">
+        <header class="site-header">
+          <a class="site-name" href="#home" data-panel-link="home" data-path="/">
+            Christopher Iliffe Sprague
+          </a>
+          <nav class="nav" aria-label="Sections">
+            <a href="#about" data-panel-link="about" data-path="/about/">about</a>
+            <a href="#thoughts" data-panel-link="thoughts" data-path="/thoughts/">thoughts</a>
+          </nav>
+        </header>
+
+        <div class="content-block" data-panel-region>
+          <section id="home" class="panel is-active" aria-labelledby="home-title" data-panel="home">
+            <h1 id="home-title" class="visually-hidden">Home</h1>
+            <figure class="landing-image" data-random-image>
+              <div class="image-placeholder">
+                <p>travel image block</p>
+              </div>
+              <figcaption data-image-caption></figcaption>
+            </figure>
+          </section>
+
+          <section id="about" class="panel prose-panel" aria-label="About" data-panel="about">
+            <p class="panel-index">01</p>
+            <p>
+              I work on physical AI: methods for scientific and engineering
+              systems where learning has to respect geometry, dynamics, and
+              physical constraints.
+            </p>
+            <p>
+              I move between robotics, control, generative modelling, physical
+              simulation, and design optimization, usually starting from first
+              principles and ending in code.
+            </p>
+            <p>
+              The threads I keep returning to are:
+            </p>
+            <ul class="simple-list">
+              <li>dynamical systems, control, and planning</li>
+              <li>structured generative modelling</li>
+              <li>scientific emulation and forecasting</li>
+              <li>molecular and materials design</li>
+              <li>agentic optimization</li>
+            </ul>
+            <p class="about-links">
+              Links:
+              <a href="mailto:sprague@kth.se">email</a>,
+              <a href="https://scholar.google.com/citations?user=3HsccBAAAAAJ">scholar</a>,
+              <a href="https://github.com/cisprague">github</a>,
+              <a href="https://www.linkedin.com/in/cisprague/">linkedin</a>
+            </p>
+          </section>
+
+          <section id="thoughts" class="panel prose-panel" aria-label="Thoughts" data-panel="thoughts">
+            <p class="panel-index">02</p>
+
+            <div class="tag-filter" aria-label="Thought tags" data-thought-filters></div>
+
+            <ol class="thought-list">
+                <li data-thought-group="tech" data-thought-tags="math">
+                  <time datetime="2026-05-23">2026-05-23</time>
+                  <div>
+                    <a href="thoughts/fokker-planck-kolmogorov.html">
+                      a note on the fokker-planck-kolmogorov equation
+                    </a>
+                    <p class="thought-meta">tech / math</p>
+                  </div>
+                </li>
+                <li data-thought-group="hiking" data-thought-tags="sweden">
+                  <time datetime="2026-05-23">2026-05-23</time>
+                  <div>
+                    <a href="thoughts/kungsleden-2025.html">
+                      kungsleden, a little too fast
+                    </a>
+                    <p class="thought-meta">hiking / sweden</p>
+                  </div>
+                </li>
+            </ol>
+          </section>
+
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

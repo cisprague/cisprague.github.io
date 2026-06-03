@@ -1,41 +1,41 @@
 const landingImages = [
   {
-    src: "assets/img/landing/london-greenwich.jpg",
+    src: "assets/img/landing/web/london-greenwich.webp",
     alt: "London skyline seen through trees from Greenwich Park",
     caption: "Greenwich Park, London",
   },
   {
-    src: "assets/img/landing/mountain-cloud.jpg",
+    src: "assets/img/landing/web/mountain-cloud.webp",
     alt: "Wide mountain valley under a blue sky with a bright cloud",
     caption: "Kebnekaise, Sweden",
   },
   {
-    src: "assets/img/landing/mountain-pass.jpg",
+    src: "assets/img/landing/web/mountain-pass.webp",
     alt: "Rocky mountain pass with a bridge and distant valley",
     caption: "Kebnekaise, Sweden",
   },
   {
-    src: "assets/img/landing/valley-boardwalk.jpg",
+    src: "assets/img/landing/web/valley-boardwalk.webp",
     alt: "Wooden boardwalk crossing a green valley between snowy mountains",
     caption: "Kungsleden, Swedish Lapland",
   },
   {
-    src: "assets/img/landing/antarctica-sunset.jpg",
+    src: "assets/img/landing/web/antarctica-sunset.webp",
     alt: "Sunset over icebergs and dark water in Antarctica",
     caption: "Antarctica",
   },
   {
-    src: "assets/img/landing/antarctica-moon-iceberg.jpg",
+    src: "assets/img/landing/web/antarctica-moon-iceberg.webp",
     alt: "Moon above icebergs and calm Antarctic water",
     caption: "Antarctica",
   },
   {
-    src: "assets/img/landing/southern-ocean-sun.jpg",
+    src: "assets/img/landing/web/southern-ocean-sun.webp",
     alt: "Bright sun over a grey Southern Ocean horizon",
     caption: "Southern Ocean",
   },
   {
-    src: "assets/img/landing/antarctica-ship-auv.jpg",
+    src: "assets/img/landing/web/antarctica-ship-auv.webp",
     alt: "Research ship and autonomous underwater vehicle in Antarctic waters",
     caption: "Antarctica",
   },
@@ -48,6 +48,8 @@ const caption = document.querySelector("[data-image-caption]");
 const thoughtFilterRoot = document.querySelector("[data-thought-filters]");
 const thoughtItems = document.querySelectorAll("[data-thought-tags]");
 let currentImageIndex = -1;
+let landingImageRequest = 0;
+const preloadedImages = new Set();
 
 function showPanel(name, pushState = true) {
   const target = document.querySelector(`[data-panel="${name}"]`);
@@ -91,14 +93,46 @@ function hydrateLandingImage() {
   }
 
   currentImageIndex = nextImageIndex;
+  landingImageRequest += 1;
+  const requestId = landingImageRequest;
   const image = landingImages[currentImageIndex];
   const img = document.createElement("img");
-  img.src = image.src;
   img.alt = image.alt;
   img.loading = "eager";
+  img.decoding = "async";
+  img.fetchPriority = "high";
 
-  imageRoot.replaceChildren(img, caption);
-  if (caption) caption.textContent = image.caption ?? "";
+  img.addEventListener(
+    "load",
+    () => {
+      if (requestId !== landingImageRequest) return;
+      imageRoot.replaceChildren(img, caption);
+      if (caption) caption.textContent = image.caption ?? "";
+      warmLandingImageCache();
+    },
+    { once: true },
+  );
+
+  img.src = image.src;
+  preloadLandingImage(image.src);
+}
+
+function preloadLandingImage(src) {
+  if (preloadedImages.has(src)) return;
+  preloadedImages.add(src);
+
+  const image = new Image();
+  image.decoding = "async";
+  image.src = src;
+}
+
+function warmLandingImageCache() {
+  const warm = () => landingImages.forEach((image) => preloadLandingImage(image.src));
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(warm, { timeout: 1500 });
+  } else {
+    setTimeout(warm, 500);
+  }
 }
 
 panelLinks.forEach((link) => {
